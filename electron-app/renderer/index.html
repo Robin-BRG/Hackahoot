@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Hackahoot</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #1a1a1a;
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background-color: #2d2d2d;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 400px;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      color: #00ff9d;
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #b3b3b3;
+      text-align: left;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid #404040;
+      border-radius: 5px;
+      background-color: #333333;
+      color: #ffffff;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    input::placeholder {
+      color: #666666;
+      text-align: center;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #00ff9d;
+    }
+
+    button {
+      width: 100%;
+      padding: 1rem;
+      background-color: #00ff9d;
+      color: #1a1a1a;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    button:hover {
+      background-color: #00cc7d;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .status {
+      margin-top: 1rem;
+      text-align: center;
+      color: #b3b3b3;
+    }
+
+    .error {
+      color: #ff4444;
+    }
+
+    .success {
+      color: #00ff9d;
+    }
+
+    /* Section separation */
+    #connexion-section, #game-section {
+      transition: opacity 0.5s;
+    }
+    #connexion-section {
+      display: block;
+    }
+    #game-section {
+      display: none;
+    }
+    .section-title {
+      color: #00ff9d;
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+    .game-info {
+      margin-bottom: 1.2rem;
+      padding: 1rem;
+      background: #232323;
+      border-radius: 7px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+    .question-block {
+      margin-bottom: 1.2rem;
+      padding: 1rem;
+      background: #232323;
+      border-radius: 7px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+    .answers-block {
+      padding: 1rem;
+      background: #232323;
+      border-radius: 7px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+    .game-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    #user-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    #status-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #00ff9d;
+      display: inline-block;
+      border: 2px solid #1a1a1a;
+    }
+    #user-pseudo {
+      font-weight: bold;
+      color: #fff;
+      font-size: 1.1rem;
+    }
+    .game-question {
+      font-size: 1.3rem;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .answers-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    .answer-card {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 1.2rem 1.5rem;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      border: 2px solid transparent;
+      transition: transform 0.1s, box-shadow 0.1s, border 0.2s;
+      user-select: none;
+    }
+    .answer-card.red { background: #e53935; }
+    .answer-card.blue { background: #1e88e5; }
+    .answer-card.yellow { background: #fbc02d; color: #222; }
+    .answer-card.green { background: #43a047; }
+    .answer-card:active {
+      transform: scale(0.98);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+      border: 2px solid #00ff9d;
+    }
+    .ai-block {
+      margin-top: 2rem;
+      background: #232323;
+      border-radius: 7px;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+    .ai-title {
+      color: #00ff9d;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .ai-response {
+      color: #fff;
+      font-size: 1rem;
+      min-height: 1.5em;
+    }
+    #user-score {
+      background: #232323;
+      color: #ffd600;
+      font-weight: bold;
+      border-radius: 6px;
+      padding: 0.2rem 0.7rem;
+      margin-left: 0.7rem;
+      font-size: 1.1rem;
+    }
+    #user-timer {
+      background: #232323;
+      color: #00ff9d;
+      font-weight: bold;
+      border-radius: 6px;
+      padding: 0.2rem 0.7rem;
+      margin-left: 0.7rem;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="connexion-section">
+      <h1>Hackahoot</h1>
+      <div class="section-title">Connexion</div>
+      <div class="input-group">
+        <label for="pin">Code PIN</label>
+        <input type="text" id="pin" placeholder="Entrez le code PIN" pattern="[0-9]*" inputmode="numeric">
+      </div>
+      <div class="input-group">
+        <label for="pseudo">Pseudo</label>
+        <input type="text" id="pseudo" placeholder="Entrez votre pseudo">
+      </div>
+      <div class="input-group">
+        <label for="apiKey">Clé API</label>
+        <input type="password" id="apiKey" placeholder="Entrez votre clé API">
+      </div>
+      <button id="startButton">Démarrer la partie</button>
+      <div id="status" class="status"></div>
+    </div>
+    <div id="game-section">
+      <div class="game-header">
+        <span id="user-status">
+          <span id="status-dot"></span>
+          <span id="user-pseudo"></span>
+          <span id="user-score" class="score"></span>
+          <span id="user-timer" class="timer"></span>
+        </span>
+      </div>
+      <div class="section-title">Jeu en cours</div>
+      <div class="game-info">
+        <div id="phase" class="status"></div>
+      </div>
+      <div class="question-block">
+        <div id="question" class="game-question"></div>
+      </div>
+      <div class="answers-cards" id="answers-cards"></div>
+      <div class="ai-block">
+        <div class="ai-title">Réponse IA (à venir)</div>
+        <div id="ai-response" class="ai-response">(Ici s'affichera la réponse générée par ChatGPT)</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+
+    // Empêcher la saisie de caractères non numériques dans le champ PIN
+    document.getElementById('pin').addEventListener('input', function(e) {
+      this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    // Gérer le clic sur le bouton
+    document.getElementById('startButton').addEventListener('click', async function() {
+      const pin = document.getElementById('pin').value;
+      const pseudo = document.getElementById('pseudo').value;
+      const apiKey = document.getElementById('apiKey').value;
+      const statusDiv = document.getElementById('status');
+      
+      if (!pin) {
+        statusDiv.textContent = 'Veuillez entrer un code PIN';
+        statusDiv.className = 'status error';
+        return;
+      }
+      if (!pseudo) {
+        statusDiv.textContent = 'Veuillez entrer un pseudo';
+        statusDiv.className = 'status error';
+        return;
+      }
+      if (!apiKey) {
+        statusDiv.textContent = 'Veuillez entrer une clé API';
+        statusDiv.className = 'status error';
+        return;
+      }
+
+      // Désactiver le bouton pendant la connexion
+      this.disabled = true;
+      statusDiv.textContent = 'Connexion à Kahoot...';
+      statusDiv.className = 'status';
+
+      try {
+        const result = await ipcRenderer.invoke('join-kahoot', { pin, pseudo, apiKey });
+        if (result.success) {
+          statusDiv.textContent = 'Connecté à Kahoot !';
+          statusDiv.className = 'status success';
+        } else {
+          statusDiv.textContent = 'Erreur de connexion: ' + (result.error || 'Erreur inconnue');
+          statusDiv.className = 'status error';
+        }
+        // Afficher la section jeu dans tous les cas
+        document.getElementById('connexion-section').style.display = 'none';
+        document.getElementById('game-section').style.display = 'block';
+        setUserPseudo(pseudo);
+      } catch (error) {
+        statusDiv.textContent = 'Erreur: ' + error.message;
+        statusDiv.className = 'status error';
+      } finally {
+        this.disabled = false;
+      }
+    });
+
+    // Affichage du pseudo et statut connecté
+    function setUserPseudo(pseudo) {
+      document.getElementById('user-pseudo').textContent = pseudo;
+    }
+
+    // Affichage de la phase du jeu
+    async function updatePhase() {
+      const phaseDiv = document.getElementById('phase');
+      try {
+        const phase = await ipcRenderer.invoke('get-game-phase');
+        phaseDiv.textContent = 'Phase du jeu : ' + phase;
+      } catch (e) {
+        phaseDiv.textContent = 'Phase du jeu : inconnue';
+      }
+    }
+    setInterval(updatePhase, 2000);
+    updatePhase();
+
+    // Affichage de la question courante
+    async function updateQuestion() {
+      const questionDiv = document.getElementById('question');
+      try {
+        const question = await ipcRenderer.invoke('get-current-question');
+        questionDiv.textContent = question
+          ? question
+          : 'Aucune question.';
+      } catch (e) {
+        questionDiv.textContent = 'Erreur lors de la récupération de la question.';
+      }
+    }
+    setInterval(updateQuestion, 2000);
+    updateQuestion();
+
+    // Affichage des réponses possibles sous forme de cards colorées
+    const colorClasses = ['red', 'blue', 'yellow', 'green'];
+    async function updateAnswers() {
+      const answersCards = document.getElementById('answers-cards');
+      try {
+        const answers = await ipcRenderer.invoke('get-current-answers');
+        answersCards.innerHTML = '';
+        answers.forEach((answer, idx) => {
+          const card = document.createElement('div');
+          card.className = 'answer-card ' + (colorClasses[idx % colorClasses.length]);
+          card.textContent = answer;
+          answersCards.appendChild(card);
+        });
+      } catch (e) {
+        answersCards.innerHTML = '<div class="status">Erreur lors de la récupération des réponses.</div>';
+      }
+    }
+    setInterval(updateAnswers, 2000);
+    updateAnswers();
+
+    // Affichage du score et du timer
+    async function updateScoreAndTimer() {
+      const scoreSpan = document.getElementById('user-score');
+      const timerSpan = document.getElementById('user-timer');
+      try {
+        const score = await ipcRenderer.invoke('get-current-score');
+        scoreSpan.textContent = score ? `Score: ${score}` : '';
+      } catch (e) {
+        scoreSpan.textContent = '';
+      }
+      try {
+        const timer = await ipcRenderer.invoke('get-current-timer');
+        timerSpan.textContent = timer ? `⏱ ${timer}s` : '';
+      } catch (e) {
+        timerSpan.textContent = '';
+      }
+    }
+    setInterval(updateScoreAndTimer, 1000);
+    updateScoreAndTimer();
+
+    // Affichage de la réponse IA
+    async function updateAIResponse() {
+      const aiDiv = document.getElementById('ai-response');
+      try {
+        const aiText = await ipcRenderer.invoke('get-last-ai-response');
+        aiDiv.textContent = aiText || '(Aucune réponse IA pour l\'instant)';
+      } catch (e) {
+        aiDiv.textContent = 'Erreur IA';
+      }
+    }
+    setInterval(updateAIResponse, 1000);
+    updateAIResponse();
+  </script>
+</body>
+</html>
