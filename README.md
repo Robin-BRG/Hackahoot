@@ -37,7 +37,7 @@ node -v
 
 1. **Clone le projet ou télécharge le ZIP**
    ```bash
-   git clone <url-du-repo>
+   git clone https://github.com/Robin-BRG/Hackahoot.git
    cd <nom-du-dossier>
    ```
    ou décompresse le ZIP et `cd` dans le dossier.
@@ -86,6 +86,9 @@ L'automatisation démarre :
   - Les réponses possibles
   - La réponse choisie par l'IA
   - Le score et le timer
+ 
+  Tu peux cliquer dans le navigateur pendant la partie.
+  Le script ne gère pas encore les questions avec choix multiple, ni celle avec du drag n' drop... Uniquement choix unique ou question vrai/faux
 
 ---
 
@@ -127,13 +130,5 @@ L'automatisation démarre :
 ## 10. Désinstallation
 
 - Supprime le dossier du projet pour tout désinstaller
-
----
-
-## 11. Contact & Support
-
-Pour toute question ou bug, ouvre une issue sur le dépôt GitHub ou contacte le développeur.
-
----
 
 **Bon jeu avec Hackahoot !**
